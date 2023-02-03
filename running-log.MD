@@ -1,4 +1,11 @@
-# Philips Running Log
+# Philips Running Log 🏃
+
+# Goals
+- [x] dependency Injection
+- Hexagonal Arch
+- New table for transactions
+- Diagram
+- External Service for scheduling 
 
 ## Start 03/02/2023 11am
 - I'm considering not doing the scheduling in this app. Reasons:
@@ -30,3 +37,12 @@ Finishing
 
 ------
 
+## Start 03/02/2023 15:37pm
+- I decided that dependency injection was a must have
+    - So I've added google Guice to the project since its lightweight and seems easy to implement.
+
+- I've done a first pass at dependency injection, next step will be the diagram and the cleaning up the interfaces and moving to Hex Arch.
+
+Finishing 03/02/2023 17:30pm
+
+----

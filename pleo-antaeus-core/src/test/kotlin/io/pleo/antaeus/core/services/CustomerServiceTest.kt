@@ -1,5 +1,6 @@
 package io.pleo.antaeus.core.services
 
+import com.google.inject.Inject
 import io.mockk.every
 import io.mockk.mockk
 import io.pleo.antaeus.core.exceptions.CustomerNotFoundException
@@ -12,7 +13,7 @@ class CustomerServiceTest {
         every { fetchCustomer(404) } returns null
     }
 
-    private val customerService = CustomerService(dal = dal)
+    private val customerService = CustomerServiceImpl(dal = dal)
 
     @Test
     fun `will throw if customer is not found`() {

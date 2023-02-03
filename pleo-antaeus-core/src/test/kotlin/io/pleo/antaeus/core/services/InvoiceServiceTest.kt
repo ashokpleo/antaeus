@@ -12,7 +12,7 @@ class InvoiceServiceTest {
         every { fetchInvoice(404) } returns null
     }
 
-    private val invoiceService = InvoiceService(dal = dal)
+    private val invoiceService = InvoiceServiceImpl(dal = dal)
 
     @Test
     fun `will throw if invoice is not found`() {
