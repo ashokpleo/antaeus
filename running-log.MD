@@ -3,7 +3,7 @@
 # Goals
 - [x] dependency Injection
 - Hexagonal Arch
-- New table for transactions
+- ~~New table for transactions~~
 - Diagram
 - External Service for scheduling 
 
@@ -55,3 +55,14 @@ Finishing 03/02/2023 17:30pm
   - I will be changing the Invoices states to `Active`, `Cancelled`
   - I'll have a new table for transactions.
   - Maybe I'll keep a transaction state on the invoice, but I'll see when I get there.
+
+
+- Okay so I've decided not to do the above because it would fundamentally change how these invoices work, Before making a change like this I would want to chat to my colleagues (I'm pretending I'm working at Pleo here) to get more context around why it was build this way
+    - However, I still feel that we need an `Active` flag somewhere, So I will be adding that to the Customer object.
+    - I dont need a table for transactions anymore if the invoice has the state. So have removed that from the above Goals.
+- I've done a first pass at the billing service and added that `Active` flag to the Customer Object, I'll be writing tests shortly
+- I still need to cleanup the interfaces and move them to where they should be, then add the Docker-compose with the "External Service"
+
+Finishing 04/02/2023 20:11pm
+
+-----

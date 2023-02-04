@@ -22,6 +22,7 @@ interface InvoiceRepo {
     fun fetchInvoices(): List<Invoice>
     fun fetchUnpaidInvoices(): List<Invoice>
     fun createInvoice(amount: Money, customer: Customer, status: InvoiceStatus = InvoiceStatus.PENDING): Invoice?
+    fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Int // TODO: PS: 04/02:2023 Ideally this should return the updated invoice.
 }
 
 class InvoiceRepoImpl(): InvoiceRepo {
@@ -87,5 +88,12 @@ class InvoiceRepoImpl(): InvoiceRepo {
         }
 
         return fetchInvoice(id)
+    }
+
+    override fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Int {
+        return transaction(db) {
+            InvoiceTable.update({ InvoiceTable.id eq invoiceId })
+                    { it[status] = invoiceStatus.name }
+        }
     }
 }

@@ -18,6 +18,8 @@ interface InvoiceService {
     fun fetch(id: Int): Invoice
 
     fun create(customerId: Int, currency: Currency, amount: Money, status: InvoiceStatus = InvoiceStatus.PENDING): Invoice?
+
+    fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Invoice
 }
 
 
@@ -36,5 +38,10 @@ class InvoiceServiceImpl @Inject constructor(private val invoiceRepo: InvoiceRep
 
     override fun create(customerId: Int, currency: Currency, amount: Money, status: InvoiceStatus): Invoice? {
         return invoiceRepo.createInvoice(amount, Customer(customerId, currency), status)
+    }
+
+    override fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Invoice {
+        updateStatus(invoiceId, invoiceStatus)
+        return fetch(invoiceId)
     }
 }

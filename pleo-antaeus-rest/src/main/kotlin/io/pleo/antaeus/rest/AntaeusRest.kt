@@ -7,6 +7,7 @@ package io.pleo.antaeus.rest
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.pleo.antaeus.core.exceptions.EntityNotFoundException
+import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Currency
@@ -17,7 +18,8 @@ private val thisFile: () -> Unit = {}
 
 class AntaeusRest(
     private val invoiceService: InvoiceService,
-    private val customerService: CustomerService
+    private val customerService: CustomerService,
+    private val billingService: BillingService
 ) : Runnable {
 
     override fun run() {
@@ -65,6 +67,10 @@ class AntaeusRest(
                         get(":id") {
                             it.json(invoiceService.fetch(it.pathParam("id").toInt()))
                         }
+
+                        get("charge") {
+                            billingService
+                        }
                     }
 
                     path("customers") {
@@ -76,10 +82,6 @@ class AntaeusRest(
                         // URL: /rest/v1/customers/{:id}
                         get(":id") {
                             it.json(customerService.fetch(it.pathParam("id").toInt()))
-                        }
-
-                        post(){
-                            customerService.createCustomer(Currency.DKK)
                         }
                     }
                 }
