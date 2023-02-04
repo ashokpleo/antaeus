@@ -17,6 +17,7 @@ fun main() {
     val invoiceService =  injector.getInstance(InvoiceService::class.java)
     val customerService =  injector.getInstance(CustomerService::class.java)
 
+    Bootstrap.setupInitialData(customerService, invoiceService)
     // Create REST web service
     AntaeusRest(
         invoiceService = invoiceService,

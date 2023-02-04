@@ -46,3 +46,12 @@ Finishing
 Finishing 03/02/2023 17:30pm
 
 ----
+
+## Start 04/02/2023 17:00pm
+
+- I'm splitting up the DAL into individual repos to separate each to their responsibilities.
+- I've also moved the bootstrap back to the app main level, I might come back to this, it also uses the Services and not the repos.
+- So I see that invoices have a state of Paid, but that doesn't make sense for a recurring subscripting payment that happens once a month.
+  - I will be changing the Invoices states to `Active`, `Cancelled`
+  - I'll have a new table for transactions.
+  - Maybe I'll keep a transaction state on the invoice, but I'll see when I get there.

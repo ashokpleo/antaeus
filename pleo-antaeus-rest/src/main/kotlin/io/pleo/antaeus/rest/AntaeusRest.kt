@@ -9,6 +9,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import io.pleo.antaeus.core.exceptions.EntityNotFoundException
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.InvoiceService
+import io.pleo.antaeus.models.Currency
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
@@ -78,7 +79,7 @@ class AntaeusRest(
                         }
 
                         post(){
-                            customerService.createCustomer()
+                            customerService.createCustomer(Currency.DKK)
                         }
                     }
                 }

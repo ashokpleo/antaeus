@@ -7,7 +7,6 @@
 
 package io.pleo.antaeus.data
 
-import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Customer
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
@@ -16,22 +15,16 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import java.math.BigDecimal
 import java.sql.Connection
-import kotlin.random.Random
 
-interface AntaeusDal {
+interface InvoiceRepo {
     fun fetchInvoice(id: Int): Invoice?
     fun fetchInvoices(): List<Invoice>
+    fun fetchUnpaidInvoices(): List<Invoice>
     fun createInvoice(amount: Money, customer: Customer, status: InvoiceStatus = InvoiceStatus.PENDING): Invoice?
-    fun fetchCustomer(id: Int): Customer?
-    fun fetchCustomers(): List<Customer>
-    fun createCustomer(currency: Currency): Customer?
 }
 
-class AntaeusDalImpl(): AntaeusDal {
-
-    private val tables = arrayOf(InvoiceTable, CustomerTable)
+class InvoiceRepoImpl(): InvoiceRepo {
 
     private val dbFile: File = File.createTempFile("antaeus-db", ".sqlite")
 
@@ -48,37 +41,11 @@ class AntaeusDalImpl(): AntaeusDal {
             transaction(it) {
                 addLogger(StdOutSqlLogger)
                 // Drop all existing tables to ensure a clean slate on each run
-                SchemaUtils.drop(*tables)
+                SchemaUtils.drop(InvoiceTable)
                 // Create all tables
-                SchemaUtils.create(*tables)
+                SchemaUtils.create(InvoiceTable)
             }
         }
-
-    init {
-        setupInitialData()
-    }
-
-    private fun setupInitialData() {
-        val customers = (1..100).mapNotNull {
-            createCustomer(
-                currency = Currency.values()[Random.nextInt(0, Currency.values().size)]
-            )
-        }
-
-        customers.forEach { customer ->
-            (1..10).forEach {
-                createInvoice(
-                    amount = Money(
-                        value = BigDecimal(Random.nextDouble(10.0, 500.0)),
-                        currency = customer.currency
-                    ),
-                    customer = customer,
-                    status = if (it == 1) InvoiceStatus.PENDING else InvoiceStatus.PAID
-                )
-            }
-        }
-    }
-
 
     override fun fetchInvoice(id: Int): Invoice? {
         // transaction(db) runs the internal query as a new database transaction.
@@ -99,6 +66,14 @@ class AntaeusDalImpl(): AntaeusDal {
         }
     }
 
+    override fun fetchUnpaidInvoices(): List<Invoice> {
+        return transaction(db) {
+            InvoiceTable
+                .selectAll().filter { it.toInvoice().status != InvoiceStatus.PAID }
+                .map { it.toInvoice() }
+        }
+    }
+
     override fun createInvoice(amount: Money, customer: Customer, status: InvoiceStatus): Invoice? {
         val id = transaction(db) {
             // Insert the invoice and returns its new id.
@@ -112,34 +87,5 @@ class AntaeusDalImpl(): AntaeusDal {
         }
 
         return fetchInvoice(id)
-    }
-
-    override fun fetchCustomer(id: Int): Customer? {
-
-        return transaction(db) {
-            CustomerTable
-                .select { CustomerTable.id.eq(id) }
-                .firstOrNull()
-                ?.toCustomer()
-        }
-    }
-
-    override fun fetchCustomers(): List<Customer> {
-        return transaction(db) {
-            CustomerTable
-                .selectAll()
-                .map { it.toCustomer() }
-        }
-    }
-
-    override fun createCustomer(currency: Currency): Customer? {
-        val id = transaction(db) {
-            // Insert the customer and return its new id.
-            CustomerTable.insert {
-                it[this.currency] = currency.toString()
-            } get CustomerTable.id
-        }
-
-        return fetchCustomer(id)
     }
 }
