@@ -25,7 +25,8 @@ class PaymentsTest {
                         id = 100,
                         customerId = 1,
                         amount = Money(BigDecimal(100), Currency.DKK),
-                        status = InvoiceStatus.PENDING
+                        status = InvoiceStatus.PENDING,
+                        active = true
                     ),
                     CustomerResult(
                         id = 1,

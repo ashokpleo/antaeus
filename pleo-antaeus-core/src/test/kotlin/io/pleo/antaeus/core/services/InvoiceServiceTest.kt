@@ -17,14 +17,16 @@ class InvoiceServiceTest {
         id = 100,
         customerId = 1,
         amount = Money(BigDecimal(100), Currency.DKK),
-        status = InvoiceStatus.PENDING
+        status = InvoiceStatus.PENDING,
+        active = true
     )
 
     private val genericInvoice2 = Invoice(
         id = 101,
         customerId = 1,
         amount = Money(BigDecimal(100), Currency.DKK),
-        status = InvoiceStatus.PAID
+        status = InvoiceStatus.PAID,
+        active = true
     )
 
     private val invoiceRepo = mockk<InvoiceRepo> {

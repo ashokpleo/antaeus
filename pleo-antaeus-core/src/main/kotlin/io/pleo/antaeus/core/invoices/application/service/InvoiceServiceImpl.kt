@@ -14,8 +14,8 @@ class InvoiceServiceImpl @Inject constructor(private val invoiceRepo: InvoiceRep
         return invoiceRepo.fetchInvoices().map { it.toResult() }
     }
 
-    override fun fetchAllUnpaid(): List<InvoiceResult> {
-        return invoiceRepo.fetchUnpaidInvoices().map { it.toResult() }
+    override fun fetchAllActive(): List<InvoiceResult> {
+        return invoiceRepo.fetchActiveInvoices().map { it.toResult() }
     }
 
     override fun fetch(id: Int): InvoiceResult {

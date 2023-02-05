@@ -58,6 +58,12 @@ class AntaeusRest(
                 // V1
                 path("v1") {
                     path("invoices") {
+                        path("active") {
+                            get {
+                                it.json(invoiceService.fetchAllActive())
+                            }
+                        }
+
                         // URL: /rest/v1/invoices
                         get {
                             it.json(invoiceService.fetchAll())

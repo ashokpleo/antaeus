@@ -2,6 +2,7 @@ package io.pleo.antaeus.core.services
 
 import io.mockk.every
 import io.mockk.mockk
+import io.pleo.antaeus.core.billing.application.exceptions.UnableToChargeInvoiceException
 import io.pleo.antaeus.core.billing.application.integration.models.ChargeResponse
 import io.pleo.antaeus.core.billing.application.models.Bill
 import io.pleo.antaeus.core.billing.application.service.BillingServiceImpl
@@ -12,6 +13,7 @@ import io.pleo.antaeus.core.invoices.application.api.InvoiceService
 import io.pleo.antaeus.core.invoices.application.models.InvoiceResult
 import io.pleo.antaeus.models.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 
 class BillingServiceTest {
@@ -19,15 +21,26 @@ class BillingServiceTest {
         id = 100,
         customerId = 1,
         amount = Money(BigDecimal(100), Currency.DKK),
-        status = InvoiceStatus.PENDING
+        status = InvoiceStatus.PENDING,
+        active = true
     )
 
     private val invoice101 = InvoiceResult(
         id = 101,
         customerId = 1,
         amount = Money(BigDecimal(100), Currency.DKK),
-        status = InvoiceStatus.PENDING
+        status = InvoiceStatus.PENDING,
+        active = true
     )
+
+    private val invoice102 = InvoiceResult(
+        id = 101,
+        customerId = 1,
+        amount = Money(BigDecimal(100), Currency.DKK),
+        status = InvoiceStatus.PENDING,
+        active = false
+    )
+
     private val customer1 = CustomerResult(id = 1, currency = Currency.DKK)
 
     private val invoiceService = mockk<InvoiceService> {
@@ -36,6 +49,9 @@ class BillingServiceTest {
 
         every { fetch(101) } returns invoice101
         every { updateStatus(101, InvoiceStatus.PENDING)} returns invoice101
+
+        every { fetch(102) } returns invoice102
+
     }
     private val customerService = mockk<CustomerService> {
         every { fetch(1) } returns customer1
@@ -67,5 +83,12 @@ class BillingServiceTest {
         // then
         assert(bill.chargeSucceeded == false)
         assert(bill.invoice.status == InvoiceStatus.PENDING)
+    }
+
+    @Test
+    fun `charging non-active invoice should throw`() {
+        assertThrows<UnableToChargeInvoiceException> {
+            billingService.chargeInvoice(102)
+        }
     }
 }

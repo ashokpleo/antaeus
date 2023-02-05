@@ -21,7 +21,7 @@ import java.sql.Connection
 interface InvoiceRepo {
     fun fetchInvoice(id: Int): Invoice?
     fun fetchInvoices(): List<Invoice>
-    fun fetchUnpaidInvoices(): List<Invoice>
+    fun fetchActiveInvoices(): List<Invoice>
     fun createInvoice(amount: Money, customer: Customer, status: InvoiceStatus = InvoiceStatus.PENDING): Invoice?
     fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Int // TODO: PS: 04/02:2023 Ideally this should return the updated invoice.
 }
@@ -70,10 +70,10 @@ class InvoiceRepoImpl(): InvoiceRepo {
         }
     }
 
-    override fun fetchUnpaidInvoices(): List<Invoice> {
+    override fun fetchActiveInvoices(): List<Invoice> {
         return transaction(db) {
             InvoiceTable
-                .selectAll().filter { it.toInvoice().status != InvoiceStatus.PAID }
+                .selectAll().filter { it.toInvoice().active }
                 .map { it.toInvoice() }
         }
     }
@@ -87,6 +87,7 @@ class InvoiceRepoImpl(): InvoiceRepo {
                     it[this.currency] = amount.currency.toString()
                     it[this.status] = status.toString()
                     it[this.customerId] = customer.id
+                    it[this.active] = true
                 } get InvoiceTable.id
         }
 

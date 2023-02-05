@@ -6,7 +6,7 @@ import io.pleo.antaeus.models.*
 interface InvoiceService {
     fun fetchAll(): List<InvoiceResult>
 
-    fun fetchAllUnpaid(): List<InvoiceResult>
+    fun fetchAllActive(): List<InvoiceResult>
 
     fun fetch(id: Int): InvoiceResult
 

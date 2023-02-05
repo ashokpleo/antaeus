@@ -80,3 +80,14 @@ Finishing 04/02/2023 20:11pm
 
 - External Service is up and running, I've hard coded th script to just use a range from 1-1000. Ideally I would get all invoices Ids first then hit the endpoint.
 - I think I'm nearing the end here, Will be drawing up my diagram shortly (this should have been done first)
+
+- I have added an active boolean flag to the invoice, there is no way to change it for now. But I do have tests that test it.
+
+
+- I'm done
+
+finishing 17:00pm
+
+-----
+
+Total time: 13 hours
