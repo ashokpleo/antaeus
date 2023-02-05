@@ -11,7 +11,7 @@ package io.pleo.antaeus.core.billing.application.spi
 import io.pleo.antaeus.core.billing.application.integration.models.ChargeResponse
 import io.pleo.antaeus.core.billing.application.models.Bill
 
-interface Payments {
+interface PaymentProvider {
     /*
         Charge a customer's account the amount from the invoice.
 

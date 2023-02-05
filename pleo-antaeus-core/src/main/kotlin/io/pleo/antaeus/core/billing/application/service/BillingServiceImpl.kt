@@ -5,16 +5,15 @@ import io.pleo.antaeus.core.billing.application.api.BillingService
 import io.pleo.antaeus.core.billing.application.integration.models.ChargeResponse
 import io.pleo.antaeus.core.customers.application.api.CustomerService
 import io.pleo.antaeus.core.invoices.application.api.InvoiceService
-import io.pleo.antaeus.core.billing.application.spi.Payments
+import io.pleo.antaeus.core.billing.application.spi.PaymentProvider
 import io.pleo.antaeus.core.billing.application.models.Bill
 import io.pleo.antaeus.core.billing.application.models.BillResult
-import io.pleo.antaeus.core.billing.application.models.toResult
 import io.pleo.antaeus.core.invoices.application.models.InvoiceResult
 import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 class BillingServiceImpl @Inject constructor(
-    private val payments: Payments,
+    private val payments: PaymentProvider,
     private val customerService: CustomerService,
     private val invoiceService: InvoiceService
 ) : BillingService {
@@ -25,8 +24,8 @@ class BillingServiceImpl @Inject constructor(
 
         val invoice = invoiceService.fetch(invoiceId)
         val customer = customerService.fetch(invoice.customerId)
-
         val bill = Bill(invoice = invoice, customer = customer)
+
         logger.info("Attempting to charge customer ${customer.id} for ${invoice.amount.value}${invoice.amount.currency}")
         val payment = payments.charge(bill)
 

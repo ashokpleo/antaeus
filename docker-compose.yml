@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  scheduler:
+    build: scheduler-app/
+    container_name: scheduler
+    depends_on:
+      - pleo-antaeus
+
+  pleo-antaeus:
+    container_name: pleo-antaeus
+    build: .
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000

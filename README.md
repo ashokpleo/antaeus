@@ -60,6 +60,17 @@ docker build -t antaeus
 docker run antaeus
 ```
 
+## Running with Schedular
+I opted to do my scheduling in an external service, please see [running-log.md](running-log.MD) for explanation
+
+I'm using docker compose to orchestrate the running of `Antaeus` and the `Scheduler-App`
+
+How to run:
+
+```
+docker compose up --build
+```
+
 ### App Structure
 The code given is structured as follows. Feel free however to modify the structure to fit your needs.
 ```
@@ -69,11 +80,10 @@ The code given is structured as follows. Feel free however to modify the structu
 |      Dependencies
 |
 ├── pleo-antaeus-app
-|       main() & initialization
+|       main() & initialization & dependency binding
 |
 ├── pleo-antaeus-core
-|       This is probably where you will introduce most of your new code.
-|       Pay attention to the PaymentProvider and BillingService class.
+|       Core business logic is isolated into 3 streams; billing, customers, invoices.
 |
 ├── pleo-antaeus-data
 |       Module interfacing with the database. Contains the database 
@@ -87,7 +97,10 @@ The code given is structured as follows. Feel free however to modify the structu
         Entry point for HTTP REST API. This is where the routes are defined.
 ```
 
+![img.png](basic-overview.png)
+
 ### Main Libraries and dependencies
+* [Google Guice](https://github.com/google/guice/wiki/Motivation) - Dependency injection
 * [Exposed](https://github.com/JetBrains/Exposed) - DSL for type-safe SQL
 * [Javalin](https://javalin.io/) - Simple web framework (for REST)
 * [kotlin-logging](https://github.com/MicroUtils/kotlin-logging) - Simple logging framework for Kotlin

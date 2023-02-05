@@ -1,11 +1,11 @@
 # Philips Running Log 🏃
 
 # Goals
-- [x] dependency Injection
-- [X] Hexagonal Arch
+- [x] Dependency Injection
+- [x] Hexagonal Arch
 - ~~New table for transactions~~
-- Diagram
-- External Service for scheduling 
+- [x] Diagram
+- [x] External Service for scheduling 
 
 ## Start 03/02/2023 11am
 - I'm considering not doing the scheduling in this app. Reasons:
@@ -29,7 +29,7 @@
 
 ### Nice to Haves
 - Dependency injection
-- Contract first design, Using something like OpenAPI and yaml files to discribe what the APIs will look like. Then on build openAPI creates interfaces from those yamls that our APIs implement.
+- Contract first design, Using something like OpenAPI and yaml files to describe what the APIs will look like. Then on build openAPI creates interfaces from those yamls that our APIs implement.
     - Our API documentation is always update this way.
 
 Finishing
@@ -76,3 +76,7 @@ Finishing 04/02/2023 20:11pm
 
 - Just a Note I decided to make the BillingService granular i.e it takes a single invoice ID at a time. I assumed that we would use some sort of eventing per invoice for scheduling, so retrying is easy and targeted. 
 - Billing service is up and running.
+
+
+- External Service is up and running, I've hard coded th script to just use a range from 1-1000. Ideally I would get all invoices Ids first then hit the endpoint.
+- I think I'm nearing the end here, Will be drawing up my diagram shortly (this should have been done first)
