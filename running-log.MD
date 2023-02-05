@@ -2,7 +2,7 @@
 
 # Goals
 - [x] dependency Injection
-- Hexagonal Arch
+- [X] Hexagonal Arch
 - ~~New table for transactions~~
 - Diagram
 - External Service for scheduling 
@@ -66,3 +66,13 @@ Finishing 03/02/2023 17:30pm
 Finishing 04/02/2023 20:11pm
 
 -----
+
+## Starting 05/02/2023 10:00am
+
+- Thinking about it overnight I'm moving the Active flag back to the invoice but keeping the paid state there as well.
+- I've gone ahead and Isolated all the layers both vertically and horizontally. E.g Customers have it own domain, if this every needs to ripped out into its own Microservice its easy.
+  - This is the crucks of Hex Arch.
+
+
+- Just a Note I decided to make the BillingService granular i.e it takes a single invoice ID at a time. I assumed that we would use some sort of eventing per invoice for scheduling, so retrying is easy and targeted. 
+- Billing service is up and running.

@@ -7,6 +7,7 @@
 
 package io.pleo.antaeus.data
 
+import com.google.inject.Singleton
 import io.pleo.antaeus.models.Customer
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
@@ -25,6 +26,7 @@ interface InvoiceRepo {
     fun updateStatus(invoiceId: Int, invoiceStatus: InvoiceStatus): Int // TODO: PS: 04/02:2023 Ideally this should return the updated invoice.
 }
 
+@Singleton
 class InvoiceRepoImpl(): InvoiceRepo {
 
     private val dbFile: File = File.createTempFile("antaeus-db", ".sqlite")
@@ -52,10 +54,11 @@ class InvoiceRepoImpl(): InvoiceRepo {
         // transaction(db) runs the internal query as a new database transaction.
         return transaction(db) {
             // Returns the first invoice with matching id.
-            InvoiceTable
+            val invoice = InvoiceTable
                 .select { InvoiceTable.id.eq(id) }
                 .firstOrNull()
                 ?.toInvoice()
+            invoice
         }
     }
 

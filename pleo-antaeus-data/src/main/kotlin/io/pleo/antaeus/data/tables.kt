@@ -5,7 +5,6 @@
 
 package io.pleo.antaeus.data
 
-import io.pleo.antaeus.models.CustomerStatus
 import org.jetbrains.exposed.sql.Table
 
 object InvoiceTable : Table() {
@@ -19,5 +18,4 @@ object InvoiceTable : Table() {
 object CustomerTable : Table() {
     val id = integer("id").autoIncrement().primaryKey()
     val currency = varchar("currency", 3)
-    val status = text("status")
 }

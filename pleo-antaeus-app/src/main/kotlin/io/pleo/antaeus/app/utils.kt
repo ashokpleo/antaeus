@@ -1,6 +1,6 @@
 
-import io.pleo.antaeus.core.services.CustomerService
-import io.pleo.antaeus.core.services.InvoiceService
+import io.pleo.antaeus.core.customers.application.api.CustomerService
+import io.pleo.antaeus.core.invoices.application.api.InvoiceService
 import io.pleo.antaeus.models.*
 import java.math.BigDecimal
 import kotlin.random.Random

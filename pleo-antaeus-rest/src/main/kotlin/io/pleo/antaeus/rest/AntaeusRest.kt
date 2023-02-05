@@ -6,11 +6,10 @@ package io.pleo.antaeus.rest
 
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
-import io.pleo.antaeus.core.exceptions.EntityNotFoundException
-import io.pleo.antaeus.core.services.BillingService
-import io.pleo.antaeus.core.services.CustomerService
-import io.pleo.antaeus.core.services.InvoiceService
-import io.pleo.antaeus.models.Currency
+import io.pleo.antaeus.core.common.exceptions.EntityNotFoundException
+import io.pleo.antaeus.core.billing.application.api.BillingService
+import io.pleo.antaeus.core.customers.application.api.CustomerService
+import io.pleo.antaeus.core.invoices.application.api.InvoiceService
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
@@ -21,6 +20,7 @@ class AntaeusRest(
     private val customerService: CustomerService,
     private val billingService: BillingService
 ) : Runnable {
+    private val logger = KotlinLogging.logger {}
 
     override fun run() {
         app.start(8000)
@@ -67,9 +67,14 @@ class AntaeusRest(
                         get(":id") {
                             it.json(invoiceService.fetch(it.pathParam("id").toInt()))
                         }
+                    }
 
-                        get("charge") {
-                            billingService
+                    path("billing") {
+                        // URL: /rest/v1/billing/{:id}
+                        post(":id") {
+                            val id = it.pathParam("id").toInt()
+                            logger.info("Received billing request for $id")
+                            it.json(billingService.chargeInvoice(id))
                         }
                     }
 

@@ -7,14 +7,13 @@
 
 package io.pleo.antaeus.data
 
+import com.google.inject.Singleton
 import io.pleo.antaeus.models.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import java.math.BigDecimal
 import java.sql.Connection
-import kotlin.random.Random
 
 interface CustomerRepo {
     fun fetchCustomer(id: Int): Customer?
@@ -22,6 +21,7 @@ interface CustomerRepo {
     fun createCustomer(currency: Currency): Customer?
 }
 
+@Singleton
 class CustomerRepoImpl(): CustomerRepo {
 
     private val dbFile: File = File.createTempFile("antaeus-db", ".sqlite")
@@ -67,7 +67,6 @@ class CustomerRepoImpl(): CustomerRepo {
             // Insert the customer and return its new id.
             CustomerTable.insert {
                 it[this.currency] = currency.toString()
-                it[this.status] = CustomerStatus.ACTIVE.name
             } get CustomerTable.id
         }
 

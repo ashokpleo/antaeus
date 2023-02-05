@@ -6,11 +6,10 @@
     however the documentation lays out scenarios in which paying an invoice could fail.
  */
 
-package io.pleo.antaeus.core.spi
+package io.pleo.antaeus.core.billing.application.spi
 
-import io.pleo.antaeus.core.integration.models.ChargeResponse
-import io.pleo.antaeus.models.Customer
-import io.pleo.antaeus.models.Invoice
+import io.pleo.antaeus.core.billing.application.integration.models.ChargeResponse
+import io.pleo.antaeus.core.billing.application.models.Bill
 
 interface Payments {
     /*
@@ -26,5 +25,5 @@ interface Payments {
           `NetworkException`: when a network error happens.
      */
 
-    fun charge(invoice: Invoice, customer: Customer?): ChargeResponse
+    fun charge(bill: Bill): ChargeResponse
 }
