@@ -38,6 +38,7 @@ Open the project using your favorite text editor. If you are using IntelliJ, you
 ```
 
 ### Running
+This App runs on port `8000`
 
 There are 2 options for running Anteus. You either need libsqlite3 or docker. Docker is easier but requires some docker knowledge. We do recommend docker though.
 
@@ -64,6 +65,8 @@ docker run antaeus
 I opted to do my scheduling in an external service, please see [running-log.md](running-log.MD) for explanation
 
 I'm using docker compose to orchestrate the running of `Antaeus` and the `Scheduler-App`
+
+There will be a delay of when the scheduling is kicks off.
 
 How to run:
 
